@@ -19,7 +19,6 @@
         <router-link :to="'/movie/' + movie.id" class="movie-link">
           <div class="product-image">
             <img :src="movie.backdrop_path ? (afficheUrl + movie.backdrop_path) : afficheDefaut" alt="Affiche du film" />
-            <div v-if="movie.genre_ids.length" class="genre"><span v-for="(genre, index) in movies.genre_ids" :key="index">{{ genre.id }}</span></div>
           </div>
           <div class="detail">
             <p class="annee">{{ movie.release_date }}</p>
@@ -42,17 +41,7 @@ export default {
   setup () {
     const search = ref("");
     const movies = ref([]);
-    const genres = ref([]);
     const afficheUrl = env.imgMovieLinks
-    // const filmGenre = ref("");
-
-    fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${env.apikey}&language=fr-FR`)
-          .then(response => response.json())
-          .then(data => {
-            genres.value = data;
-            // console.log(data);
-            // console.log(genres.value);
-          })
 
     const SearchMovies = () => {
       if (search.value != "") {
@@ -62,20 +51,7 @@ export default {
             movies.value = data.results;
             search.value = ""; //remet à zéro la saisie
             console.log(movies.value[0].adult);
-            for (let index = 0; index < movies.value.length; index++) {
-              const element = movies.value[index];
-              console.log("Film : " + element.genre_ids);
-            }
-            
-            // console.log("Genres des films " + data.results.genre_ids);
-            for (const film of data.results) {
-              console.log(film.genre_ids);
-            }
-            // filmGenre = data.results
-            // movies = data;
-            
           });
-          movies.value.forEach(element => console.log("Élément" + element.genre_ids));
       }
     }
 
@@ -203,15 +179,6 @@ export default {
               object-fit: scale-down;
             }
 
-            .genre {
-              position: absolute;
-              padding: .5rem 1rem;
-              background-color: #42B883;
-              color: #fff;
-              bottom: 1rem;
-              left: 0;
-              text-transform: capitalize;
-            }
           }
 
           .detail {
