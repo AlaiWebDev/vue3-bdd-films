@@ -31,7 +31,7 @@
 </template>
 
 <script>
-// @ is an alias to /src
+// @ est un alias à /src (uniquement lorsque webpack est incous dans les modules du projet)
 import { ref } from 'vue';
 import env from '@/env.js';
 import image from "@/assets/logo.jpg";
@@ -49,7 +49,7 @@ export default {
           .then(response => response.json())
           .then(data => {
             movies.value = data.results;
-            search.value = ""; //remet à zéro la saisie
+            search.value = ""; // remet à zéro la saisie
             console.log(movies.value[0].adult);
           });
       }
@@ -68,6 +68,139 @@ export default {
 </script>
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Ubuntu:wght@700&display=swap');
+  @media screen and (min-width: 800px) {
+  .home {
+    .feature-card {
+      display: flex;
+      flex-direction: column;
+      .featured-img {
+        display: block;
+        width: fit-content;
+        margin: auto;
+        height: 19rem;
+        object-fit: cover;
+      }
+      .details {
+        text-align: center;
+        background-color: rgba(0, 0, 0, .6);
+        padding: 1rem;
+        z-index: 1;
+        h3 {
+        color: #fff;
+        margin-bottom: 1rem;
+        }
+
+        p, h3 {
+          color: #fff;
+          font-family: 'Amatic SC', cursive;
+          font-size: 1.5rem;
+        }
+      }
+    }
+    .search-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+
+      input {
+        display: block;
+        appearance: none;
+        border: none;
+        outline: none;
+        background: none;
+
+        &[type="text"] {
+          width: 30%;
+          color: #fff;
+          background-color: #496583;
+          font-size: 1.1rem;
+          padding: .75rem 1rem;
+          border-radius: .5rem;
+          margin-bottom: 1rem;
+          transition: 0.4s;
+
+          &::placeholder {
+            color: #f3f3f3;
+          }
+
+          &:focus {
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+          }
+        }
+        &[type="submit"] {
+          width: 100%;
+          max-width: 19rem;
+          background-color: #42B883;
+          padding: 1rem;
+          border-radius: .5rem;
+          color:#fff;
+          font-size: 1.1rem;
+          text-transform: uppercase;
+          transition: 0.4s;
+
+          &:active {
+            background-color: #3B8070;
+          }
+        }
+      }
+    }
+    .movies-list {
+      display: flex;
+      width: 60%;
+      flex-wrap: wrap;
+      margin: 0 auto;
+
+      .movie {
+        max-width: 20%;
+        flex: 1 1 50%;
+        padding: 1rem .5rem;
+
+        .movie-link {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+
+          .product-image {
+            position: relative;
+            display: block;
+
+            img {
+              display: block;
+              width: 100%;
+              // height: 17rem;
+              object-fit: scale-down;
+            }
+
+          }
+
+          .detail {
+            background-color: #496583;
+            padding: 1rem .5rem;
+            flex: 1 1 100%;
+            border-radius: 0px 0px .5rem .5rem;
+
+            .annee {
+              color: #AAA;
+              font-size: .75rem;
+            }
+
+            h3 {
+              color: #fff;
+              font-weight: 600;
+              font-size: 1.1rem;
+            }
+          }
+        }
+      }
+    }
+    
+  }
+  
+}
+@media screen and (max-width: 767px) {
+
   .home {
 
     .feature-card {
@@ -202,6 +335,6 @@ export default {
       }
     }
   }
-  
+} 
 
 </style>

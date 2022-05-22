@@ -54,19 +54,41 @@ export default {
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Rowdies:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap');
+@media screen and (min-width: 800px) {
     .movie-details {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        width: 80%;
+        margin: auto;
+        text-align: center;
+        .synoptique {
+        width: 50%;
+        margin: 1rem auto;
+        }
+        img {
+            display: block;
+            margin: auto;
+            width: 50%;
+        }
+        h2, #genres, #date_sortie {
+            margin: 1rem auto;
+        padding: .5rem .5rem
+    }
+    }
+}
+@media screen and (max-width: 767px) {
+    .movie-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-            p, .synoptique {
-            padding: 1rem .5rem;
-            font-family: 'Rowdies', cursive;
+        .synoptique {
+        padding: 1rem .5rem;
+        font-family: 'Rowdies', cursive;
         }
 
         #titre {
             font-size: 1.5rem;
-            padding: 0 .5rem
+            padding: 0 .5rem;
+            text-align: center;
         }
 
         span {
@@ -98,5 +120,5 @@ export default {
             object-fit: scale-down;
         }
     }
-
+}
 </style>
