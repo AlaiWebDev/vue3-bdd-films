@@ -1,53 +1,50 @@
 <template>
-  <div class="movie-details">
-      <h2 id="titre">{{ movie.title }}</h2>
-      <div class="genres" ><span v-for="genre in genresFilm" :key="genre.name">{{ genre }}&nbsp;</span></div>
-      <h2 id="date_sortie">Date de sortie : <span>{{ dateSortie }}</span></h2>
-      <img :src="afficheUrl + movie.backdrop_path" alt="Affiche du film" class="featured-img" />
-      <div class="synoptique">
-          {{ movie.overview }}
-      </div>
-      <div class="titre"></div>
-  </div>
+    <div class="movie-details">
+        <h2 id="titre">{{ movie.title }}</h2>
+        <div class="genres" ><span v-for="genre in genresFilm" :key="genre.name">{{ genre }}&nbsp;</span></div>
+        <h2 id="date_sortie">Date de sortie : <span>{{ dateSortie }}</span></h2>
+        <img :src="afficheUrl + movie.backdrop_path" alt="Affiche du film" class="featured-img" />
+        <div class="synoptique">
+            {{ movie.overview }}
+        </div>
+        <div class="titre"></div>
+    </div>
 </template>
 
 <script>
-import { ref, onBeforeMount } from 'vue';
+// import { ref, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
 import env from '@/env.js';
 
 export default {
-    setup () {
-        const movie = ref({});
-        const route = useRoute();
-        const afficheUrl = env.imgMovieLinks;
-        const genresFilm = [];
-        const dateSortie = ref("");
-        onBeforeMount(() => {
-            fetch(`https://api.themoviedb.org/3/movie/${route.params.id}?api_key=${env.apikey}&language=fr-FR`)
+    data: function () {
+        return {
+            movie: {},
+            route: useRoute(),
+            afficheUrl: env.imgMovieLinks,
+            genresFilm: [],
+            dateSortie: ""
+        }
+    },
+    beforeMount() {
+
+            fetch(`https://api.themoviedb.org/3/movie/${this.route.params.id}?api_key=${env.apikey}&language=fr-FR`)
             .then(response => response.json())
             .then(data => {
-                movie.value = data;
-                for (const genre of movie.value.genres) {
-                    genresFilm.push(genre.name);
+                this.movie = data;
+                console.log(this.movie);
+                for (const genre of this.movie.genres) {
+                    this.genresFilm.push(genre.name);
                 }
-                console.log("L'objet GenresFilm contient : " + genresFilm);
-                var timestamp = Date.parse(movie.value.release_date);
+                console.log("L'objet GenresFilm contient : " + this.genresFilm);
+                var timestamp = Date.parse(this.movie.release_date);
                 var dateTime = new Date(timestamp);
                 console.log("Jour : " + dateTime.getDate());
                 console.log("Mois : " + dateTime.getMonth());
-                dateSortie.value = ((dateTime.getDate().toString().length === 1 ? ("0" +(dateTime.getDate())) : dateTime.getDate())) + "/" + ((((dateTime.getMonth()+1).toString().length === 1) ? ("0" + (dateTime.getMonth()+1)) : dateTime.getMonth()+1)) + "/" + dateTime.getFullYear();
-                console.log("Date Sortie : ", dateSortie);
+                this.dateSortie = ((dateTime.getDate().toString().length === 1 ? ("0" +(dateTime.getDate())) : dateTime.getDate())) + "/" + ((((dateTime.getMonth()+1).toString().length === 1) ? ("0" + (dateTime.getMonth()+1)) : dateTime.getMonth()+1)) + "/" + dateTime.getFullYear();
+                console.log("Date Sortie : ", this.dateSortie);
             });
-        });
-
-        return {
-            movie,
-            afficheUrl,
-            genresFilm,
-            dateSortie
         }
-    }
 }
 </script>
 
