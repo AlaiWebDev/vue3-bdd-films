@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="feature-card">
-        <img :src="image" class="featured-img">
+        <img :src="image" class="featured-img" alt="image Logo">
         <div class="details">
           <h3>Fan de cinéma...</h3>
           <p>Je suis un amoureux du cinéma et je vous souhaite la bienvenue sur mon appli... encyclopédique</p>
@@ -32,36 +32,33 @@
 
 <script>
 // @ est un alias à /src (uniquement lorsque webpack est incous dans les modules du projet)
-import { ref } from 'vue';
 import env from '@/env.js';
 import image from "@/assets/logo.jpg";
 import afficheDefaut from '@/assets/defaut.jpg'
 
 export default {
-  setup () {
-    const search = ref("");
-    const movies = ref([]);
-    const afficheUrl = env.imgMovieLinks
-
-    const SearchMovies = () => {
-      if (search.value != "") {
-        fetch(`https://api.themoviedb.org/3/search/movie?api_key=${env.apikey}&query=${search.value}&language=fr`)
+  data: function () {
+    return {
+      search: "",
+      movies: [],
+      afficheUrl: env.imgMovieLinks,
+      image,
+      afficheDefaut,
+      apikey: env.apikey
+    }
+  },
+  methods: {
+    SearchMovies: function () {
+      if (this.search != "") {
+        fetch(`https://api.themoviedb.org/3/search/movie?api_key=${this.apikey}&query=${this.search}&language=fr`)
           .then(response => response.json())
           .then(data => {
-            movies.value = data.results;
-            search.value = ""; // remet à zéro la saisie
-            console.log(movies.value[0].adult);
+            this.movies = data.results;
+            this.search = ""; // remet à zéro la saisie
+            console.log(this.movies[0].adult);
+            return this.movies;
           });
       }
-    }
-
-    return {
-      search,
-      movies,
-      SearchMovies,
-      afficheUrl,
-      image,
-      afficheDefaut
     }
   }
 }
